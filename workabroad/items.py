@@ -9,3 +9,12 @@ class WorkabroadItem(Item):
     # define the fields for your item here like:
     # name = Field()
     pass
+
+class PostItem(Item):
+    title = Field()
+    location = Field()
+    expiry = Field()
+    agency = Field()
+    qualifications = Field()
+    info = Field()
+    requirements = Field()
