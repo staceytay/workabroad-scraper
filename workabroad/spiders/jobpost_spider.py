@@ -1,4 +1,5 @@
 from scrapy import log
+from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Request
@@ -10,11 +11,27 @@ class JobPostSpider(CrawlSpider):
 
     allowed_domains = ['workabroad.ph']
     start_urls = [
-        'http://www.workabroad.ph/report_job_listing.php?ajid=1155069&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
-        'http://www.workabroad.ph/report_job_listing.php?ajid=1110009&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
-        'http://www.workabroad.ph/report_job_listing.php?ajid=1110004&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
-        'http://www.workabroad.ph/report_job_listing.php?ajid=1109910&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
+        'http://www.workabroad.ph/list_specific_jobs.php?by_what=date',
     ]
+
+    def get_absolute_address(relative_address):
+        return 'http://www.workabroad.ph/' + relative_address
+
+    rules = (
+        Rule(SgmlLinkExtractor(restrict_xpaths=('//table/tr[4]/td/table/tr/td[3]/table[5]/tr/td/form/a'),
+                               process_value=get_absolute_address),
+             follow=True, callback='parse_index'),
+    )
+
+    def parse_index(self, response):
+        self.log("LOG: parse_index: Parsing %s" % response.url)
+        sel = Selector(response)
+        post_links = sel.xpath('//table/tr[4]/td/table/tr/td[3]/table[4]/tr/td[1]//a/@href').extract()
+        for link in post_links:
+            link = 'http://www.workabroad.ph/' + link
+            request = Request(link, callback=self.parse_job_page)
+            yield request
+
 
     def parse_job_page(self, response):
         self.log("LOG: parse_job_page: Parsing %s" % response.url)
