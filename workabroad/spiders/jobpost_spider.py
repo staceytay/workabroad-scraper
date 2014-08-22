@@ -16,7 +16,8 @@ class JobPostSpider(CrawlSpider):
         'http://www.workabroad.ph/report_job_listing.php?ajid=1109910&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
     ]
 
-    def parse(self, response):
+    def parse_job_page(self, response):
+        self.log("LOG: parse_job_page: Parsing %s" % response.url)
         sel = Selector(response)
         item = PostItem()
         item['title'] = sel.xpath('//td[@class="jobtitle"]/h1/text()').extract()
