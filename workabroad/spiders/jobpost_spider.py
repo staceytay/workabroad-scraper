@@ -7,6 +7,8 @@ from workabroad.items import PostItem
 
 class JobPostSpider(CrawlSpider):
     name = 'post'
+
+    allowed_domains = ['workabroad.ph']
     start_urls = [
         'http://www.workabroad.ph/report_job_listing.php?ajid=1155069&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
         'http://www.workabroad.ph/report_job_listing.php?ajid=1110009&utm_source=WA+Jobs&utm_medium=job+details&utm_campaign=job_details',
