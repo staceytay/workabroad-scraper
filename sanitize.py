@@ -10,6 +10,28 @@ import os
 import json
 import sys
 
+class Sanitizer:
+    @staticmethod
+    def clean_data(data):
+        """
+        Recursively cleans data. Works for dicts, lists, and strings.
+        """
+        if isinstance(data, (str, unicode)):
+            return data.strip()
+        elif isinstance(data, list):
+            cleaned = [Sanitizer.clean_data(d) for d in data]
+            return [d for d in cleaned if d not in ["", [], {}]]
+        elif isinstance(data, dict):
+            cleaned = {}
+            for key, value in data.iteritems():
+                temp = Sanitizer.clean_data(value)
+                if temp not in ["", [], {}]:
+                    cleaned[key] = temp
+            return cleaned
+        else:
+            raise Exception("clean_data: unsupported data " + str(type(data)))
+
+
 def main():
     parser = argparse.ArgumentParser(description="Sanitize workabroad.ph scraped data")
     parser.add_argument("export", help="Export file format, 'csv' or 'json'")
