@@ -13,3 +13,6 @@ NEWSPIDER_MODULE = 'workabroad.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'workabroad (+http://www.yourdomain.com)'
+
+DOWNLOAD_DELAY = 10
+RANDOMIZE_DOWNLOAD_DELAY = True
