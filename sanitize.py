@@ -5,6 +5,8 @@ workabroad.ph.
 """
 
 import argparse
+import codecs
+import os
 import json
 import sys
 
@@ -18,6 +20,13 @@ def main():
 
     global args
     args = parser.parse_args()
+
+    file_path = os.path.dirname(os.path.abspath(__file__)) + '/' + args.inputfile
+
+    with codecs.open(file_path, 'r', 'utf-8') as json_data:
+        items = json.load(json_data)
+        for i, item in enumerate(items):
+            pass
 
     if args.export == "csv":
         pass
