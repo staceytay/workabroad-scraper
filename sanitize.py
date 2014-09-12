@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 This script cleans and processes JSON data scraped, using Scrapy, from
-workabroad.ph.
+workabroad.ph and exports them to .csv or .json files.
 """
 
 import argparse
@@ -45,18 +45,19 @@ def main():
 
     file_path = os.path.dirname(os.path.abspath(__file__)) + '/' + args.inputfile
 
-    with codecs.open(file_path, 'r', 'utf-8') as json_data:
+    with codecs.open(file_path, 'r', 'utf-8') as json_data,\
+         codecs.open(args.outputfile + '.' + args.export, 'w', 'utf-8') as out:
         items = json.load(json_data)
+        cleaned_items = []
         for i, item in enumerate(items):
+            cleaned_items.append(Sanitizer.clean_data(item))
+        if args.export == "csv":
             pass
-
-    if args.export == "csv":
-        pass
-    elif args.export == "json":
-        pass
-    else:
-        sys.exit("Invalid export file format: " + args.export + ", only 'csv' and "
-                 "'json' is accepted")
+        elif args.export == "json":
+            json.dump(cleaned_items, out)
+        else:
+            sys.exit("Invalid export file format: " + args.export +
+                     ", only 'csv' and 'json' is accepted")
 
 
 if __name__ == '__main__':
