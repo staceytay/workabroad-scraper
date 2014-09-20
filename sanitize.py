@@ -29,7 +29,26 @@ class Sanitizer:
                     cleaned[key] = temp
             return cleaned
         else:
-            raise Exception("clean_data: unsupported data " + str(type(data)))
+            raise Exception("clean_data: unsupported data type " + str(type(data)))
+
+    @staticmethod
+    def flatten(data, flat={}, prefix=""):
+        """
+        "Public" method
+        Flattens a JSON object to make it store data in csv later. The given
+        JSON object cannot contain a list.
+        """
+        if prefix:
+            prefix = prefix + '_'
+        for key, value in data.iteritems():
+            if isinstance(value, (str, unicode)):
+                flat[prefix + key] = value
+            elif isinstance(value, dict):
+                flatten(value, flat, prefix + key)
+            else:
+                raise Exception("flatten: unsupported data type " +
+                                str(type(data)))
+        return flat
 
     @staticmethod
     def process_data(data):
