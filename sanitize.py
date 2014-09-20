@@ -52,6 +52,16 @@ class Sanitizer:
 
     @staticmethod
     def process_data(data):
+        """
+        "Public" function:
+        1. Remove whitespace and newlines from scraped data;
+        2. Join list of strings for a field into a single string.
+
+        Parameters
+        ----------
+        data: dict
+             A single JSON data object
+        """
         data = Sanitizer.clean_data(data)
         for field in ["expiry", "location", "requirements", "title"]:
             data[field] = Sanitizer.stringify(data[field])
