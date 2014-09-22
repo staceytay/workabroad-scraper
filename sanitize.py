@@ -6,14 +6,22 @@ workabroad.ph and exports them to .csv or .json files.
 
 import argparse
 import codecs
+import csv
 import os
 import json
 import sys
+
+CSV_HEADERS = ['agency_address', 'agency_license', 'agency_name',
+               'agency_telephone', 'expiry', 'info_principal', 'location',
+               'qualifications_age', 'qualifications_education',
+               'qualifications_experience', 'qualifications_gender',
+               'requirements', 'title']
 
 class Sanitizer:
     @staticmethod
     def clean_data(data):
         """
+        "Private" function:
         Recursively cleans data. Works for dicts, lists, and strings.
         """
         if isinstance(data, (str, unicode)):
@@ -95,7 +103,12 @@ def main():
         for i, item in enumerate(items):
             processed_items.append(Sanitizer.process_data(item))
         if args.export == "csv":
-            pass
+            writer = csv.writer(out)
+            writer.writerow(CSV_HEADERS)
+            for item in processed_items:
+                flat = Sanitizer.flatten(item)
+                values = [flat[key] for key in CSV_HEADERS]
+                writer.writerow(values)
         elif args.export == "json":
             json.dump(processed_items, out)
         else:
