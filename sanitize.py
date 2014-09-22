@@ -44,7 +44,7 @@ class Sanitizer:
             if isinstance(value, (str, unicode)):
                 flat[prefix + key] = value
             elif isinstance(value, dict):
-                flatten(value, flat, prefix + key)
+                Sanitizer.flatten(value, flat, prefix + key)
             else:
                 raise Exception("flatten: unsupported data type " +
                                 str(type(data)))
