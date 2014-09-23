@@ -3,7 +3,9 @@
 This script cleans and processes JSON data scraped, using Scrapy, from
 workabroad.ph and exports them to .csv or .json files.
 """
-
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 import argparse
 import codecs
 import csv
