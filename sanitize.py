@@ -21,7 +21,7 @@ CSV_HEADERS = ['agency_address', 'agency_license', 'agency_name',
 
 class Sanitizer:
     @staticmethod
-    def clean_data(data):
+    def _clean_data(data):
         """
         "Private" function:
         Recursively cleans data. Works for dicts, lists, and strings.
@@ -29,17 +29,17 @@ class Sanitizer:
         if isinstance(data, (str, unicode)):
             return data.strip()
         elif isinstance(data, list):
-            cleaned = [Sanitizer.clean_data(d) for d in data]
+            cleaned = [Sanitizer._clean_data(d) for d in data]
             return [d for d in cleaned if d not in ["", [], {}]]
         elif isinstance(data, dict):
             cleaned = {}
             for key, value in data.iteritems():
-                temp = Sanitizer.clean_data(value)
+                temp = Sanitizer._clean_data(value)
                 if temp not in ["", [], {}]:
                     cleaned[key] = temp
             return cleaned
         else:
-            raise Exception("clean_data: unsupported data type " + str(type(data)))
+            raise Exception("_clean_data: unsupported data type " + str(type(data)))
 
     @staticmethod
     def flatten(data, flat={}, prefix=""):
@@ -72,7 +72,7 @@ class Sanitizer:
         data: dict
              A single JSON data object
         """
-        data = Sanitizer.clean_data(data)
+        data = Sanitizer._clean_data(data)
         for field in ["expiry", "location", "requirements", "title"]:
             data[field] = Sanitizer.stringify(data.get(field, [""]))
         for field in ["agency", "info", "qualifications"]:
