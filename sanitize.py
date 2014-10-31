@@ -88,7 +88,7 @@ class Sanitizer:
 def main():
     parser = argparse.ArgumentParser(description="Sanitize workabroad.ph scraped data")
     parser.add_argument("export", help="Export file format, 'csv' or 'json'")
-    parser.add_argument("inputfile", help="Text file to be parsed")
+    parser.add_argument("inputfile", help="Raw JSON file to be parsed")
     parser.add_argument("outputfile", help="Name of file to export data to")
     parser.add_argument("-v", "--verbose", help="Increase output verbosity, "
                         "use when debugging only", action="store_true")
