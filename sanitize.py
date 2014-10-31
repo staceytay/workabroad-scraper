@@ -14,8 +14,8 @@ import json
 import sys
 
 CSV_HEADERS = ['agency_address', 'agency_license', 'agency_name',
-               'agency_telephone', 'expiry', 'info_principal', 'location',
-               'qualifications_age', 'qualifications_education',
+               'agency_telephone', 'expiry', 'href', 'id', 'info_principal',
+               'location', 'qualifications_age', 'qualifications_education',
                'qualifications_experience', 'qualifications_gender',
                'requirements', 'title']
 
