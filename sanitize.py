@@ -74,7 +74,7 @@ class Sanitizer:
         """
         data = Sanitizer.clean_data(data)
         for field in ["expiry", "location", "requirements", "title"]:
-            data[field] = Sanitizer.stringify(data[field])
+            data[field] = Sanitizer.stringify(data.get(field, [""]))
         for field in ["agency", "info", "qualifications"]:
             for key, value in data[field].iteritems():
                 data[field][key] = Sanitizer.stringify(value)
