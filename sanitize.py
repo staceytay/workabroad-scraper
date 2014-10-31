@@ -99,7 +99,7 @@ def main():
     file_path = os.path.dirname(os.path.abspath(__file__)) + '/' + args.inputfile
 
     with codecs.open(file_path, 'r', 'utf-8') as json_data,\
-         codecs.open(args.outputfile + '.' + args.export, 'w', 'utf-8') as out:
+         codecs.open(args.outputfile, 'w', 'utf-8') as out:
         items = json.load(json_data)
         processed_items = []
         for i, item in enumerate(items):
