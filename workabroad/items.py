@@ -11,6 +11,8 @@ class WorkabroadItem(Item):
     pass
 
 class PostItem(Item):
+    href = Field()
+    id = Field()
     title = Field()
     location = Field()
     expiry = Field()

@@ -1,3 +1,4 @@
+import urlparse
 from scrapy import log
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
@@ -37,6 +38,12 @@ class JobPostSpider(CrawlSpider):
         self.log("LOG: parse_job_page: Parsing %s" % response.url)
         sel = Selector(response)
         item = PostItem()
+
+        # Job post's URL and the job post's ID
+        item['href'] = response.url
+        item['id'] = urlparse.parse_qs(urlparse.urlparse(response.url).query
+                                       ).get('ajid', [None])[0]
+
         item['title'] = sel.xpath('//td[@class="jobtitle"]/h1/text()').extract()
         item['location'] = sel.xpath('//td[@class="jobsite"]/text()').extract()
         item['expiry'] = sel.xpath('//td[@class="jobexpiration"]/text()').extract()
