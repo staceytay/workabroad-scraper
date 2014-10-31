@@ -105,7 +105,7 @@ def main():
         for i, item in enumerate(items):
             processed_items.append(Sanitizer.process_data(item))
         if args.export == "csv":
-            writer = csv.writer(out)
+            writer = csv.writer(out, delimiter=';')
             writer.writerow(CSV_HEADERS)
             for item in processed_items:
                 flat = Sanitizer.flatten(item)
