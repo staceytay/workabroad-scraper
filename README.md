@@ -4,7 +4,7 @@ WorkAbroad.ph Scraper
 A Scrapy project for scraping
 [workabroad.ph](http://www.workabroad.ph/index.php) job posts.
 
-# Installing
+# Installing Scrapy
 ```
 pip install scrapy
 ```
@@ -22,7 +22,7 @@ DOWNLOAD_DELAY = 10
 # Wait a random time between 0.5 and 1.5 * DOWNLOAD_DELAY
 RANDOMIZE_DOWNLOAD_DELAY = True
 ```
-### To clean scraped data
+### To clean and export scraped data to CSV
 ```
-./sanitize.py json inputfile.json outputfilename
+./sanitize.py csv inputfile.json outputfile.json
 ```
