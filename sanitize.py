@@ -18,6 +18,17 @@ CSV_HEADERS = ['agency_address', 'agency_license', 'agency_name',
                'location', 'qualifications_age', 'qualifications_education',
                'qualifications_experience', 'qualifications_gender',
                'requirements', 'title']
+EXPECTED_FIELDS = {
+    "agency": ["address", "license", "name", "telephone"],
+    "expiry": None,
+    "href": None,
+    "id": None,
+    "info": ["principle"],
+    "location": None,
+    "qualifications": ["experience", "gender"],
+    "requirements": None,
+    "title": None,
+}
 
 class Sanitizer:
     @staticmethod
@@ -61,11 +72,12 @@ class Sanitizer:
         return flat
 
     @staticmethod
-    def process_data(data):
+    def process_data(data, expected_fields=None):
         """
         "Public" function:
         1. Remove whitespace and newlines from scraped data;
-        2. Join list of strings for a field into a single string.
+        2. Ensure that expected fields are present.
+        3. Join list of strings for a field into a single string.
 
         Parameters
         ----------
@@ -73,6 +85,18 @@ class Sanitizer:
              A single JSON data object
         """
         data = Sanitizer._clean_data(data)
+        if expected_fields:
+            for key, value in expected_fields.iteritems():
+                if key not in data:
+                    if isinstance(value, list):
+                        data[key] = {}
+                    else:
+                        data[key] = ""
+                if isinstance(value, list):
+                    for key2 in value:
+                        if key2 not in data[key]:
+                            data[key][key2] = ""
+
         for field in ["expiry", "location", "requirements", "title"]:
             data[field] = Sanitizer.stringify(data.get(field, [""]))
         for field in ["agency", "info", "qualifications"]:
@@ -103,7 +127,8 @@ def main():
         items = json.load(json_data)
         processed_items = []
         for i, item in enumerate(items):
-            processed_items.append(Sanitizer.process_data(item))
+            processed_items.append(Sanitizer.process_data(item,
+                                                          expected_fields=EXPECTED_FIELDS))
         if args.export == "csv":
             writer = csv.writer(out, delimiter=';')
             writer.writerow(CSV_HEADERS)
